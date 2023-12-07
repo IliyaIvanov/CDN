@@ -1,0 +1,39 @@
+version: '3'
+services:
+  origin:
+    image: nginx:latest
+    volumes:
+      - ./origin.conf:/etc/nginx/nginx.conf:ro
+      - ./videos:/usr/share/nginx/html/videos:ro
+
+  edge1:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./edge.conf:/etc/nginx/nginx.conf:ro
+      - ./cache:/usr/share/nginx/html/cache
+
+  edge2:
+    image: nginx:latest
+    ports:
+      - "8081:80"  # Change the port if needed
+    volumes:
+      - ./edge.conf:/etc/nginx/nginx.conf:ro
+      - ./cache:/usr/share/nginx/html/cache
+      
+  edge3:
+    image: nginx:latest
+    ports:
+      - "8082:80"  # Change the port if needed
+    volumes:
+      - ./edge.conf:/etc/nginx/nginx.conf:ro
+      - ./cache:/usr/share/nginx/html/cache
+      
+  reverse_proxy:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./reverse_proxy.conf:/etc/nginx/nginx.conf:ro
+     
